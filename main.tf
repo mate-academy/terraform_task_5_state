@@ -1,7 +1,7 @@
 terraform {
   backend "azurerm" {
     resource_group_name   = "task_5_rg"
-    storage_account_name  = "task5storageacctunique"
+    storage_account_name  = "storagetask5account"
     container_name        = "task5container"
     key                   = "terraform.tfstate"
   }
@@ -17,7 +17,7 @@ resource "azurerm_resource_group" "task_5_rg" {
 }
 
 resource "azurerm_storage_account" "task_5_sa" {
-  name                     = "task5storageacctunique"
+  name                     = "storagetask5account"
   resource_group_name      = azurerm_resource_group.task_5_rg.name
   location                 = azurerm_resource_group.task_5_rg.location
   account_tier             = "Standard"
