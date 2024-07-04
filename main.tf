@@ -1,9 +1,9 @@
 terraform {
   backend "azurerm" {
-    resource_group_name  = "task_5_rg"
-    storage_account_name = "storagetask5account"
-    container_name       = "task5container"
-    key                  = "terraform.tfstate"
+    resource_group_name   = "task_5_rg"
+    storage_account_name  = "storagetask5account"
+    container_name        = "task5container"
+    key                   = "terraform.tfstate"
   }
 }
 
