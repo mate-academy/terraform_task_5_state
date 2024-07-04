@@ -1,4 +1,10 @@
 terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "3.110.0"
+    }
+  }
   backend "azurerm" {
     resource_group_name  = "task_5_rg"
     storage_account_name = "storagetask5account"
