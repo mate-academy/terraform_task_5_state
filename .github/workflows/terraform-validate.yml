@@ -1,40 +1,49 @@
 name: Terraform Validate
 
-run-name: ${{ github.actor }} - ${{ github.ref_name }}
-
 on:
   pull_request:
     branches: ["main"]
-
   workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+env:
+  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
 
 jobs:
   terraform_validate:
-    name: "Format and Validate Code"
+    name: "Validate Terraform Configuration"
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Terraform
+    - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: 1.8.4
 
-    - name: Check backend configuration
+    - name: Check Terraform files
       run: |
-        if ! grep -q 'backend "azurerm"' ./*.tf; then
-          echo "Azure backend configuration not found!"
+        if ! grep -q 'backend "azurerm"' *.tf; then
+          echo "Error: Azure backend configuration not found"
           exit 1
         fi
-        echo "Azure backend configuration is present!"
-    
-    - name: Terraform Fmt
-      run: terraform fmt -check -recursive -diff
-  
+        if ! grep -q 'resource_group_name' *.tf || ! grep -q 'storage_account_name' *.tf || ! grep -q 'container_name' *.tf || ! grep -q 'key' *.tf; then
+          echo "Error: Missing required backend configuration elements"
+          exit 1
+        fi
+        echo "Terraform files check passed"
+
+    - name: Terraform Format
+      run: terraform fmt -check -recursive
+
     - name: Terraform Init
-      run: terraform init
-  
+      run: terraform init -backend=false
+
     - name: Terraform Validate
       run: terraform validate
