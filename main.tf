@@ -5,7 +5,7 @@ terraform {
       version = "3.110.0"
     }
   }
-backend "azurerm" {
+  backend "azurerm" {
     resource_group_name  = "ikmyTFStateResourceGroup"
     storage_account_name = "ikmytfstatestorage"
     container_name       = "iktfstate"
