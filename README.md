@@ -22,7 +22,7 @@ To complete this task, you must have Terraform and Azure CLI installed and confi
 **3. Add the JSON Output to GitHub Secrets**
 
 - Click on `Settings` > `Secrets and variables` > `Actions` > `New repository secret`.
-- Name the secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` and paste the `clientId`, `tenantId`, `subscriptionId` from JSON output into the value fields.
+- Name the secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_CLIENT_SECRET` and paste the `clientId`, `tenantId`, `subscriptionId`, `clientSecret` from JSON output into the value fields.
 
 **4. Set Up Local Backend**
 
