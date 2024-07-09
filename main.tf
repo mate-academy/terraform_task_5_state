@@ -30,6 +30,7 @@ resource "azurerm_storage_container" "task_5_container" {
   container_access_type = "private"
 }
 
+
 output "resource_group_name" {
   value = azurerm_resource_group.task_5_rg.name
 }
