@@ -43,7 +43,7 @@ jobs:
         environment: azurecloud
         allow-no-subscriptions: false
         audience: api://AzureADTokenExchange
-        auth-type: servicePrincipal
+        auth-type: SERVICE_PRINCIPAL
       env:
         TERRAFORM_CLI_PATH: /home/runner/work/_temp/d7125f4f-ceaf-4708-8492-5224222114d6
 
