@@ -40,3 +40,5 @@ To complete this task, you must have Terraform and Azure CLI installed and confi
 
 - Run Terraform plan and apply commands to verify the setup.
 - Check the Azure Blob Storage to ensure the `terraform.tfstate` file is stored there.
+
+**7. Pull request's description should also contain a reference to a successful workflow run**
