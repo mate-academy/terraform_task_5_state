@@ -1,3 +1,4 @@
+
 name: Terraform Validate
 
 run-name: ${{ github.actor }} - ${{ github.ref_name }}
@@ -8,10 +9,13 @@ on:
 
   workflow_dispatch:
 
-jobs:
+jobs:        
   terraform_validate:
     name: "Format and Validate Code"
     runs-on: ubuntu-latest
+    permissions: 
+       id-token: write 
+       contents: read
 
     steps:
     - name: Checkout code
