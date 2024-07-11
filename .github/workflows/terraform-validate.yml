@@ -11,8 +11,7 @@ on:
 jobs:        
   terraform_validate:
     name: "Format and Validate Code"
-    runs-on: ubuntu-latest
-    
+    runs-on: ubuntu-latest    
     permissions: 
        id-token: write 
        contents: read
