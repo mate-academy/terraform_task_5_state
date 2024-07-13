@@ -33,4 +33,3 @@ resource "azurerm_storage_container" "task-5-container" {
   container_access_type = "private"
 }
 
-
