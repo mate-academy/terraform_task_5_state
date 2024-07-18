@@ -1,44 +1,47 @@
-# Configuring Remote State in Terraform
-
+Configuring Remote State in Terraform
 Transition from a local Terraform state file to a remote state backend in Azure Blob Storage. This setup is essential for collaborative infrastructure management, ensuring that the state is safely stored and accessible by the entire team.
 
-## Prerequisites
+Prerequisites
+To complete this task, you must have:
 
-To complete this task, you must have Terraform and Azure CLI installed and configured on your machine.
+Terraform installed (version 1.8.4 or later)
+Azure CLI installed and configured
+An Azure subscription
+Steps to Complete the Task
+1. Fork this Repository
 
-## Steps to Complete the Task
+2. Create a Service Principal in Azure
 
-**1. Fork this Repository**
+Log in to Azure CLI:
+az login
+Create a resource group for Terraform state storage:
+az group create --name tfstate --location eastus
+Create an Azure storage account:
+az storage account create --resource-group tfstate --name <unique-storage-account-name> --sku Standard_LRS --encryption-services blob
+Create a blob container:
+az storage container create --name tfstate --account-name <storage-account-name>
+Create a service principal and generate its credentials:
+az ad sp create-for-rbac --name "TerraformSP" --role contributor --scopes /subscriptions/<subscription-id> --sdk-auth
+3. Configure GitHub Secrets
 
-**2. Create a Service Principal in Azure**
+Add the following secrets to your GitHub repository:
 
-- Run the following command to create a service principal. Replace `<service-principal-name>` with a unique name of your choice and `<subscription-id>` with your Azure subscription ID:
+AZURE_CLIENT_ID: The client ID of the managed identity
+az identity show --name TerraformMSI --resource-group tfstate --query clientId -o tsv
+AZURE_SUBSCRIPTION_ID: Your Azure subscription ID
+az account show --query id -o tsv
+AZURE_TENANT_ID: Your Azure tenant ID
+az account show --query tenantId -o tsv
+4. Set Up Local Backend
 
-   ```bash
-   az ad sp create-for-rbac --name "<service-principal-name>" --role contributor --scopes /subscriptions/<subscription-id> --sdk-auth
-   ```
-- The command will output a JSON object containing the service principal credentials. Copy this JSON object.
+Create an initial main.tf file with a basic setup for the local backend and Azure provider.
+Initialize Terraform to use the local backend.
+5. Transition to Remote State Backend
 
-**3. Add the JSON Output to GitHub Secrets**
+Modify your main.tf file to include the Azure backend configuration.
+Use use_oidc = true setting in both the backend and provider blocks for enabling OIDC authentication with Azure.
+6. Verify the Remote State Configuration
 
-- Click on `Settings` > `Secrets and variables` > `Actions` > `New repository secret`.
-- Name the secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` and paste the `clientId`, `tenantId`, `subscriptionId` from JSON output into the value fields.
-
-**4. Set Up Local Backend**
-
-- Ensure that the initial `main.tf` file includes a basic setup for the local backend.
-- Initialize Terraform to use the local backend.
-
-**5. Transition to Remote State Backend**
-
-- Modify `main.tf` to configure the remote backend in Azure.
-- Create necessary Azure resources for the backend configuration.
-- Apply the configuration to create the necessary Azure resources.
-- Initialize Terraform with the new backend configuration, migrating the state from local to remote.
-
-**6. Verify the Remote State Configuration**
-
-- Run Terraform plan and apply commands to verify the setup.
-- Check the Azure Blob Storage to ensure the `terraform.tfstate` file is stored there.
-
-**7. Pull request's description should also contain a reference to a successful workflow run**
+Run Terraform plan and apply commands to verify the setup.
+Check the Azure Blob Storage to ensure the terraform.tfstate file is stored there.
+7. Pull request's description should also contain a reference to a successful workflow run
