@@ -11,8 +11,6 @@ terraform {
     storage_account_name  = "storagetask5account"
     container_name        = "task5container"
     key                   = "terraform.tfstate"
-
-    # Enable OIDC authentication
     use_oidc              = true
   }
 }
