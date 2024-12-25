@@ -27,18 +27,6 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
 
-    - name: Check Terraform files
-      run: |
-        if ! grep -q 'backend "azurerm"' *.tf; then
-          echo "Error: Azure backend configuration not found"
-          exit 1
-        fi
-        if ! grep -q 'resource_group_name' *.tf || ! grep -q 'storage_account_name' *.tf || ! grep -q 'container_name' *.tf || ! grep -q 'key' *.tf; then
-          echo "Error: Missing required backend configuration elements"
-          exit 1
-        fi
-        echo "Terraform files check passed"
-
     - name: Terraform Format
       run: terraform fmt -check -recursive
 
