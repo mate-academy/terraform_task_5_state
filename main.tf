@@ -16,7 +16,6 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "3.105.0"
   features {}
 
   use_oidc = true
