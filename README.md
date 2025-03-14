@@ -41,7 +41,7 @@ To complete this task, you must have:
 
 Add the following secrets to your GitHub repository:
 
-   * `AZURE_CLIENT_ID`: The client ID of the managed identity 
+   * `AZURE_CLIENT_ID`: The client ID of the managed identity
       ```bash
       az identity show --name TerraformMSI --resource-group tfstate --query clientId -o tsv
       ```
@@ -70,3 +70,10 @@ Add the following secrets to your GitHub repository:
 - Check the Azure Blob Storage to ensure the `terraform.tfstate` file is stored there.
 
 **7. Pull request's description should also contain a reference to a successful workflow run**
+
+
+
+
+The retrieval request was successfully completed. You can check the successful execution of the workflow at the following link:
+[Link to Successful Workflow Execution]
+https://github.com/mate-academy/terraform_task_5_state/actions/runs/13858647017
