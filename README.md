@@ -26,15 +26,15 @@ To complete this task, you must have:
    ```
 - Create an Azure storage account:
    ```bash
-   az storage account create --resource-group tfstate --name <unique-storage-account-name> --sku Standard_LRS --encryption-services blob
+   az storage account create --resource-group tfstate --name "storagedemo123123" --sku Standard_LRS --encryption-services blob
    ```
 - Create a blob container:
    ```bash
-   az storage container create --name tfstate --account-name <storage-account-name>
+   az storage container create --name tfstate --account-name "storagedemo123123"
    ```
 - Create a service principal and generate its credentials:
    ```bash
-   az ad sp create-for-rbac --name "TerraformSP" --role contributor --scopes /subscriptions/<subscription-id> --sdk-auth
+   az ad sp create-for-rbac --name "TerraformSP" --role contributor --scopes /subscriptions/2332629e-d3ed-430b-a7b0-7912b9db8a11 --sdk-auth
    ```
 
 **3. Configure GitHub Secrets**
