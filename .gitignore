@@ -1,0 +1,18 @@
+# Файли стану Terraform (містять чутливі дані)
+*.tfstate
+*.tfstate.backup
+
+# План з terraform plan
+*.tfplan
+
+# Локальні файли терраформ
+.terraform/
+.terraform.lock.hcl
+
+# Вихідні лог-файли
+crash.log
+
+# IDE або редактор (VSCode, JetBrains тощо)
+.vscode/
+.idea/
+*.swp
