@@ -70,3 +70,4 @@ Add the following secrets to your GitHub repository:
 - Check the Azure Blob Storage to ensure the `terraform.tfstate` file is stored there.
 
 **7. Pull request's description should also contain a reference to a successful workflow run**
+https://github.com/mate-academy/terraform_task_5_state/actions/runs/16743862066/job/47397700271?pr=44
