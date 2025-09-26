@@ -1,4 +1,73 @@
-# Data sources для існуючих ресурсів
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "3.105.0"
+    }
+  }
+
+  backend "azurerm" {
+    resource_group_name  = "tfstate-rg"
+    storage_account_name = "tfstatestorage"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
+variable "resource_group_name" {
+  description = "Назва існуючої групи ресурсів"
+  type        = string
+  default     = "my-resource-group"
+}
+
+variable "virtual_network_name" {
+  description = "Назва існуючої віртуальної мережі"
+  type        = string
+  default     = "my-vnet"
+}
+
+variable "subnet_name" {
+  description = "Назва існуючої підмережі"
+  type        = string
+  default     = "my-subnet"
+}
+
+variable "network_interface_name" {
+  description = "Назва існуючого мережевого інтерфейсу"
+  type        = string
+  default     = "my-nic"
+}
+
+variable "virtual_machine_name" {
+  description = "Назва існуючої віртуальної машини"
+  type        = string
+  default     = "my-vm"
+}
+
+variable "admin_username" {
+  description = "Ім'я адміністратора для підключення"
+  type        = string
+  sensitive   = true
+  default     = "adminuser"
+}
+
+variable "admin_password" {
+  description = "Пароль адміністратора для підключення"
+  type        = string
+  sensitive   = true
+  default     = "Password1234!"
+}
+
+variable "ssh_public_key" {
+  description = "SSH публічний ключ для автентифікації"
+  type        = string
+  default     = "~/.ssh/id_rsa.pub"
+}
+
 data "azurerm_resource_group" "main" {
   name = var.resource_group_name
 }
@@ -34,7 +103,6 @@ locals {
   has_public_ip     = local.public_ip_address != ""
 }
 
-# Рендеринг шаблону HTML
 resource "local_file" "index_html" {
   filename = "index.html"
   content  = templatefile("${path.module}/index.html.tpl", {
@@ -45,7 +113,6 @@ resource "local_file" "index_html" {
   })
 }
 
-# Файл з інформацією про VM
 resource "local_file" "vm_info" {
   filename = "vm_info.txt"
   content  = <<-EOT
@@ -58,7 +125,6 @@ resource "local_file" "vm_info" {
 EOT
 }
 
-# Налаштування Nginx через null_resource
 resource "null_resource" "nginx_setup" {
   count = local.has_public_ip ? 1 : 0
 
@@ -89,7 +155,8 @@ resource "null_resource" "nginx_setup" {
       "sudo mv /tmp/index.html /var/www/html/index.html",
       "sudo chown www-data:www-data /var/www/html/index.html",
       "sudo chmod 644 /var/www/html/index.html",
-      "sudo systemctl restart nginx"
+      "sudo systemctl restart nginx",
+      "echo 'Nginx successfully installed and configured!'"
     ]
   }
 
@@ -97,14 +164,27 @@ resource "null_resource" "nginx_setup" {
 }
 
 output "public_ip_address" {
-  value = local.public_ip_address
+  description = "Public IP address of the existing VM"
+  value       = local.public_ip_address
 }
 
-output "nginx_url" {
-  value = "http://${local.public_ip_address}"
+output "vm_name" {
+  description = "Name of the existing VM"
+  value       = data.azurerm_virtual_machine.main.name
+}
+
+output "vm_status" {
+  description = "Power status of the existing VM"
+  value       = data.azurerm_virtual_machine.main.power_state
 }
 
 output "ssh_connection" {
+  description = "SSH connection string"
   value       = "ssh ${var.admin_username}@${local.public_ip_address}"
   sensitive   = true
+}
+
+output "nginx_url" {
+  description = "URL to access Nginx"
+  value       = "http://${local.public_ip_address}"
 }
