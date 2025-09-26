@@ -1,0 +1,1 @@
+https://github.com/LitvinchukRoman/terraform_task_5_state/actions/runs/18010938874/job/51243124661
