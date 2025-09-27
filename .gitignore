@@ -1,0 +1,10 @@
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+*.tfplan
+!tfplan
+*.env
+*.pem
+*.key
+vm_info.txt
