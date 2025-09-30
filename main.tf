@@ -1,8 +1,10 @@
 terraform {
+  required_version = ">= 1.8.4"
+
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=3.0.0"
+      version = "~> 3.0"
     }
   }
 
@@ -16,6 +18,5 @@ terraform {
 
 provider "azurerm" {
   features {}
-
   use_oidc = true
 }
