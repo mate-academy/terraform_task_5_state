@@ -8,15 +8,11 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    resource_group_name  = "tfstate"
-    storage_account_name = "alinabondstorage"
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
+  backend "local" {
+
   }
 }
 
 provider "azurerm" {
   features {}
-  use_oidc = true
 }
