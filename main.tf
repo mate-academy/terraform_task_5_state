@@ -8,7 +8,6 @@ terraform {
     }
   }
 
-  # Remote state у Azure Blob з OIDC
   backend "azurerm" {
     resource_group_name  = "tfstate"
     storage_account_name = "tfstatevitaliy123"
@@ -18,15 +17,21 @@ terraform {
   }
 }
 
-# Провайдер під OIDC (без client secret)
 provider "azurerm" {
   features {}
   subscription_id = var.subscription_id
+  tenant_id       = var.tenant_id
   use_oidc        = true
 }
 
-# Змінна, щоб отримати id підписки з секретів / env
 variable "subscription_id" {
   type        = string
-  description = "Azure subscription ID used by the provider."
+  description = "Azure subscription ID"
 }
+
+variable "tenant_id" {
+  type        = string
+  description = "Azure tenant ID"
+}
+
+/* Далі – твоя інфраструктура (якщо потрібна для перевірки) */
