@@ -11,9 +11,9 @@ permissions:
   issues: write
 
 env:
-  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
 jobs:
   terraform_validate:
@@ -21,29 +21,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Check Terraform files
-      run: |
-        if ! grep -q 'backend "azurerm"' *.tf; then
-          echo "Error: Azure backend configuration not found"
-          exit 1
-        fi
-        if ! grep -q 'resource_group_name' *.tf || ! grep -q 'storage_account_name' *.tf || ! grep -q 'container_name' *.tf || ! grep -q 'key' *.tf; then
-          echo "Error: Missing required backend configuration elements"
-          exit 1
-        fi
-        echo "Terraform files check passed"
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
-    - name: Terraform Format
-      run: terraform fmt -check -recursive
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
 
-    - name: Terraform Init
-      run: terraform init -backend=false
+      - name: Terraform Init (Remote Backend)
+        run: terraform init
 
-    - name: Terraform Validate
-      run: terraform validate
+      - name: Terraform Validate
+        run: terraform validate
