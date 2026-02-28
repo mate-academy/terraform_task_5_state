@@ -41,7 +41,7 @@ To complete this task, you must have:
 
 Add the following secrets to your GitHub repository:
 
-   * `AZURE_CLIENT_ID`: The client ID of the managed identity 
+   * `AZURE_CLIENT_ID`: The client ID of the managed identity
       ```bash
       az identity show --name TerraformMSI --resource-group tfstate --query clientId -o tsv
       ```
@@ -66,7 +66,7 @@ Add the following secrets to your GitHub repository:
 
 **6. Verify the Remote State Configuration**
 
-- Run Terraform plan and apply commands to verify the setup.
+- Run Terraform plan and apply commands to verify the setup.)
 - Check the Azure Blob Storage to ensure the `terraform.tfstate` file is stored there.
 
 **7. Pull request's description should also contain a reference to a successful workflow run**
