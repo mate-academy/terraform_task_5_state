@@ -11,10 +11,11 @@ terraform {
     storage_account_name = "dimak100"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
+    use_oidc = true
   }
 }
 
 provider "azurerm" {
   features {}
-  oidc_auth = true
+  use_oidc = true
 }
