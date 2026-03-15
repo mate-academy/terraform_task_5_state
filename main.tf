@@ -10,7 +10,7 @@ terraform {
 
   backend "azurerm" {
     resource_group_name  = "tfstate"
-    storage_account_name = "replacewithuniquestorage"
+    storage_account_name = "tfstate1773576401"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
     use_oidc             = true
