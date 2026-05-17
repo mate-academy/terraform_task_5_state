@@ -26,22 +26,22 @@ To complete this task, you must have:
    ```
 - Create an Azure storage account:
    ```bash
-   az storage account create --resource-group tfstate --name <unique-storage-account-name> --sku Standard_LRS --encryption-services blob
+   az storage account create --resource-group tfstate --name tfstatestorageacctk --sku Standard_LRS --encryption-services blob
    ```
 - Create a blob container:
    ```bash
-   az storage container create --name tfstate --account-name <storage-account-name>
+   az storage container create --name tfstate --account-name tfstatestorageacctk
    ```
 - Create a service principal and generate its credentials:
    ```bash
-   az ad sp create-for-rbac --name "TerraformSP" --role contributor --scopes /subscriptions/<subscription-id> --sdk-auth
+   az ad sp create-for-rbac --name "TerraformSP" --role contributor --scopes /subscriptions/160ffdfa-8615-4341-9b87-05796c2c8526 --sdk-auth
    ```
 
 **3. Configure GitHub Secrets**
 
 Add the following secrets to your GitHub repository:
 
-   * `AZURE_CLIENT_ID`: The client ID of the managed identity 
+   * `AZURE_CLIENT_ID`: The client ID of the managed identity
       ```bash
       az identity show --name TerraformMSI --resource-group tfstate --query clientId -o tsv
       ```
