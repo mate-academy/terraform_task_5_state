@@ -1,0 +1,16 @@
+.terraform/
+.git/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+*.tfplan
+.terraformrc
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+.vscode/
+*.pem
+*.key
+*.pub
+.DS_Store
