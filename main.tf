@@ -5,9 +5,6 @@ terraform {
       version = "3.105.0"
     }
   }
-#   backend "local" {
-#     path = "./state/terraform.tfstate"
-#   }
   backend "azurerm" {
     storage_account_name = "ands9storageaccount"
     container_name       = "tfstate"
