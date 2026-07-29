@@ -10,8 +10,8 @@ terraform {
     resource_group_name  = "tfstate"
     storage_account_name = "sttfstatebaranotik"
     container_name       = "tfstate"
-    key                   = "terraform.tfstate"
-    use_oidc              = true
+    key                  = "terraform.tfstate"
+    use_oidc             = true
   }
 }
 
