@@ -13,10 +13,6 @@ terraform {
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }
-
-  backend "local" {
-    path = "terraform.tfstate"
-  }
 }
 
 provider "azurerm" {
