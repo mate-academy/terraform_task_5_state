@@ -1,4 +1,10 @@
 terraform {
+
+  # Initial local backend configuration used before migrating state to Azure.
+  # backend "local" {
+  #   path = "terraform.tfstate"
+  # }
+
   backend "azurerm" {
     storage_account_name = "alexdev"
     container_name       = "tfstate"
