@@ -7,6 +7,11 @@ terraform {
   }
 
 
+  # Initial local backend configuration used before migrating state to Azure.
+  # backend "local" {
+  #   path = "terraform.tfstate"
+  # }
+
   backend "azurerm" {
     resource_group_name  = "tfstate"
     storage_account_name = "storageaccforbackend"
