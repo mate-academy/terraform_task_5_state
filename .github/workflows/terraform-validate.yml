@@ -3,6 +3,8 @@ name: Terraform Validate
 on:
   pull_request:
     branches: ["main"]
+  push:
+    branches: ["solving"]
   workflow_dispatch:
 
 permissions:
