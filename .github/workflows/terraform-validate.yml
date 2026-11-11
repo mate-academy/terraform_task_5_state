@@ -4,16 +4,11 @@ on:
   pull_request:
     branches: ["main"]
   workflow_dispatch:
+  push:
+    branches: ["new_branch"]
 
 permissions:
-  id-token: write
   contents: read
-  issues: write
-
-env:
-  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
 
 jobs:
   terraform_validate:
@@ -47,3 +42,33 @@ jobs:
 
     - name: Terraform Validate
       run: terraform validate
+
+
+  terraform_remote_state:
+    name: Verify Azure remote state
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    concurrency: terraform-remote-state
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.4
+          terraform_wrapper: false
+
+      - name: Initialize Azure backend with OIDC
+        run: terraform init -input=false -lockfile=readonly
+
+      - name: Apply and verify state
+        run: |
+          terraform plan -input=false -out=tfplan
+          terraform apply -input=false tfplan
+          terraform state list | grep -Fx 'terraform_data.example'
