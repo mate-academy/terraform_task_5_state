@@ -41,7 +41,7 @@ To complete this task, you must have:
 
 Add the following secrets to your GitHub repository:
 
-   * `AZURE_CLIENT_ID`: The client ID of the managed identity 
+   * `AZURE_CLIENT_ID`: The client ID of the managed identity
       ```bash
       az identity show --name TerraformMSI --resource-group tfstate --query clientId -o tsv
       ```
